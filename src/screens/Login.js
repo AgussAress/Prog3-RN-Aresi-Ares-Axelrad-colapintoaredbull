@@ -1,24 +1,15 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity } from 'react-native';
 
 export default class Login extends Component {
   render() {
     return (
-      <View style={styles.container}>
-        <Text style={styles.text}>Login</Text>
+      <View>
+        <Text>Este es el Login</Text>
+        <TouchableOpacity onPress={() => this.props.navigation.navigate('register')}>
+          <Text>No tenés una cuenta? Registrate</Text>
+        </TouchableOpacity>
       </View>
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  text: {
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
-});
