@@ -5,7 +5,7 @@ export default class TodosLosUsuarios extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.text}>odos los usuarios</Text>
+        <Text style={styles.text}>Todos los usuarios</Text>
       </View>
     );
   }
