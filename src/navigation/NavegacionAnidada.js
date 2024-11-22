@@ -14,7 +14,7 @@ export default class NavegacionAnidada extends Component {
     return (
       <Tab.Navigator>
         <Tab.Screen 
-          name="home" 
+          name="Home" 
           component={Home} 
           options={{
             headerShown: false,
@@ -22,17 +22,17 @@ export default class NavegacionAnidada extends Component {
           }} 
         />
         <Tab.Screen 
-          name="profile" 
+          name="Profile" 
           component={Profile} 
           options={{ headerShown: false }} 
         />
         <Tab.Screen 
-          name="buscador" 
+          name="Buscador" 
           component={BuscadorUsers} 
           options={{ headerShown: false }} 
         />
         <Tab.Screen 
-          name="todos" 
+          name="Crear posteo" 
           component={TodosLosUsuarios} 
           options={{ headerShown: false }} 
         />
