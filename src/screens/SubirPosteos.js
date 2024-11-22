@@ -19,15 +19,15 @@ export default class CreatePost extends Component {
       return;
     }
 
-    const postData = {
+    const posts = {
       text: postText,
       createdAt: new Date(),
-      owner: auth.currentUser .email,
+      owner: auth.currentUser.email,
       likes: [],
     };
 
     db.collection('posts')
-      .add(postData)
+      .add(posts)
       .then(() => {
         Alert.alert('Éxito', 'Posteo creado con éxito.');
         this.setState({ postText: '' }); 
