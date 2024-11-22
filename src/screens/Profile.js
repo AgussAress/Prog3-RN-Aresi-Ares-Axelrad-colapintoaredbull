@@ -89,9 +89,6 @@ export default class Profile extends Component {
       :
       (<Text style={styles.loadingText}>Cargando informacion...</Text>)}
 
-      <TouchableOpacity title = "Crear posteos" onPress={() => this.props.navigation.navigate('SubirPosteos')}>
-          <Text style={styles.createPostButton}>Crear posteos</Text>
-        </TouchableOpacity>
       
       <FlatList
         data = {this.state.posts}

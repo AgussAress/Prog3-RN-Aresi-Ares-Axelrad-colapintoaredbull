@@ -6,6 +6,7 @@ import Home from "../screens/Home";
 import Profile from '../screens/Profile';
 import BuscadorUsers from '../screens/BuscadorUsers';
 import TodosLosUsuarios from '../screens/TodosLosUsuarios';
+import SubirPosteos from "../screens/SubirPosteos"
 
 const Tab = createBottomTabNavigator();
 
@@ -33,7 +34,7 @@ export default class NavegacionAnidada extends Component {
         />
         <Tab.Screen 
           name="Crear posteo" 
-          component={TodosLosUsuarios} 
+          component={SubirPosteos} 
           options={{ headerShown: false }} 
         />
       </Tab.Navigator>
