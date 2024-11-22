@@ -1,97 +1,127 @@
-import React, { Component } from 'react';
-import { Text, View, TouchableOpacity, TextInput, StyleSheet } from 'react-native';
+import React, { Component } from "react";
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Dimensions } from "react-native";
 import { auth } from "../firebase/config";
 
 export default class Login extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      usuario: "",
-      email: "",
-      password: "",
-    };
-  }
+  state = {
+    email: "",
+    password: "",
+    error: "",
+  };
 
-  componentDidMount() {
-    console.log("Componente montado");
-  }
+  handleLogin = () => {
+    const { email, password } = this.state;
 
-  login() {
-    const { email, password, usuario } = this.state;
     auth
-      .signInWithEmailAndPassword(email, password, usuario)
-      .then((userCredential) => {
-        console.log("Inicio de sesión exitoso");
-        console.log(userCredential.user);
-        this.props.navigation.navigate("HomeMenu");
+      .signInWithEmailAndPassword(email, password)
+      .then(() => {
+        this.props.navigation.navigate("anidada");
       })
       .catch((error) => {
-        // Manejo de errores de autenticación
-        if (error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password') {
-          Alert.alert("Error", "Credenciales incorrectas");
-        } else {
-          Alert.alert("Error", error.message);
-        }
+        this.setState({ error: error.message });
       });
-  }
-
-  irARegister() {
-    this.props.navigation.navigate("Register");
-  }
+  };
 
   render() {
     return (
       <View style={styles.container}>
-        <Text>Login</Text>
-        <TextInput
-          style={styles.input}
-          keyboardType="email-address"
-          placeholder="Email"
-          onChangeText={(email) => this.setState({ email })}
-          value={this.state.email}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Contraseña"
-          secureTextEntry={true}
-          onChangeText={(password) => this.setState({ password })}
-          value={this.state.password}
-        />
-        <TouchableOpacity style={styles.button} onPress={() => this.login()}>
-          <Text style={styles.buttonText}>Iniciar Sesión</Text>
-        </TouchableOpacity>
+        <Text style={styles.titulo}>Inicia Sesión</Text>
 
-        <TouchableOpacity onPress={() => this.irARegister()}>
-          <Text>Ir al registro</Text>
-        </TouchableOpacity>
+        <View style={styles.form}>
+          <TextInput
+            style={styles.input}
+            placeholder="Email"
+            keyboardType="email-address"
+            value={this.state.email}
+            onChangeText={(email) => this.setState({ email })}
+          />
+
+          <TextInput
+            style={styles.input}
+            placeholder="Contraseña"
+            secureTextEntry
+            value={this.state.password}
+            onChangeText={(password) => this.setState({ password })}
+          />
+
+          {this.state.error ? <Text style={styles.errorTexto}>{this.state.error}</Text> : null}
+
+          <TouchableOpacity style={styles.boton} onPress={this.handleLogin}>
+            <Text style={styles.buttonTexto}>Iniciar Sesión</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity style={styles.linkBoton} onPress={() => this.props.navigation.navigate("register")}>
+            <Text style={styles.linkBotonTexto}>¿No tienes una cuenta? Regístrate</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     );
   }
 }
 
+const { width } = Dimensions.get("window");
+
 const styles = StyleSheet.create({
   container: {
-    paddingHorizontal: 10,
-    marginTop: 20,
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#fff",
+    padding: 20,
+  },
+  titulo: {
+    fontSize: 28,
+    fontWeight: "bold",
+    color: "#333",
+    marginBottom: 30,
+  },
+  form: {
+    width: width > 600 ? "40%" : "90%",
+    backgroundColor: "#f9f9f9",
+    borderRadius: 10,
+    padding: 20,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 2,
   },
   input: {
-    height: 40,
-    paddingVertical: 10,
-    paddingHorizontal: 10,
+    width: "100%",
+    height: 50,
     borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 6,
-    marginVertical: 10,
-  },
-  button: {
-    backgroundColor: '#007bff',
+    borderColor: "#ddd",
+    borderRadius: 8,
     paddingHorizontal: 10,
-    paddingVertical: 10,
-    alignItems: 'center',
-    borderRadius: 4,
+    marginBottom: 15,
+    backgroundColor: "#fff",
   },
-  buttonText: {
-    color: '#fff',
-    fontWeight: 'bold',
+  boton: {
+    width: "100%",
+    height: 50,
+    backgroundColor: "#3897f0",
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 8,
+    marginTop: 10,
+  },
+  buttonTexto: {
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: "bold",
+  },
+  linkBoton: {
+    marginTop: 15,
+    alignItems: "center",
+  },
+  linkBotonTexto: {
+    color: "#3897f0",
+    fontSize: 14,
+    textDecorationLine: "underline",
+  },
+  errorTexto: {
+    color: "red",
+    marginBottom: 10,
+    textAlign: "center",
   },
 });
