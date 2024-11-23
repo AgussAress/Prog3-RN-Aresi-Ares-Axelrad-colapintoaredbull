@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, Alert, FlatList, TouchableOpacity } from 'react
 import { db } from "../firebase/config"
 import { auth } from "../firebase/config"
 import SubirPosteos from "../screens/SubirPosteos"
-
+import Likes from '../componentes/Likes';
 
 export default class Profile extends Component {
 
@@ -68,7 +68,7 @@ export default class Profile extends Component {
       })
   }
 
-  handleLogout = () =>
+  logout = () =>
     auth.signOut()
       .then(() => {
         this.props.navigation.navigate('Login')}) //ver como navegar al login xq no es anidada
@@ -107,6 +107,7 @@ export default class Profile extends Component {
               <View style={styles.postContainer}>
                 <Text>Tu posteo:</Text>
                 <Text style={styles.postText}>{item.data.text}</Text> 
+                <Likes postId={item.id} />
                 <TouchableOpacity onPress={() => this.deletePost(item.id)}>
                   <Text style={styles.deleteButton}>Eliminar</Text>
                 </TouchableOpacity>
@@ -114,7 +115,7 @@ export default class Profile extends Component {
             )}
             />
           )}
-        <TouchableOpacity title="Cerrar sesión" onPress={this.handleLogout} color="#FF0000" />
+        <TouchableOpacity title="Cerrar sesión" onPress={this.logout} color="#FF0000" />
       </View>
     );
   }

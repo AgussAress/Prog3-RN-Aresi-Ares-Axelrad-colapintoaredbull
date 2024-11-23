@@ -58,22 +58,28 @@ export default class CreatePost extends Component {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 20,
-    justifyContent: 'center',
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 20,
-  },
-  input: {
-    height: 100,
-    borderColor: 'gray',
-    borderWidth: 1,
-    marginBottom: 20,
-    padding: 10,
-    borderRadius: 5,
-  },
-});
+    container: {
+      flex: 1,
+      backgroundColor: '#FFFFFF', 
+      padding: 20, 
+    },
+    title: {
+      fontSize: 28, 
+      fontWeight: 'bold',
+      color: '#000000', 
+      marginBottom: 30, 
+      textAlign: 'center', 
+    },
+    input: {
+      height: 100, 
+      borderColor: '#007BFF', 
+      borderWidth: 1, 
+      borderRadius: 5, 
+      padding: 10, 
+      marginBottom: 20, 
+      backgroundColor: '#F0F0F0', 
+      fontSize: 16, 
+      color: '#000000', 
+    },
+    
+  });
