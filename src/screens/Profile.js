@@ -1,23 +1,20 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, Alert, FlatList, TouchableOpacity } from 'react-native';
-import { db } from "../firebase/config"
-import { auth } from "../firebase/config"
-import SubirPosteos from "../screens/SubirPosteos"
-import Likes from '../componentes/Likes';
+import { db, auth } from "../firebase/config";
+import { LinearGradient } from 'expo-linear-gradient';
 
 export default class Profile extends Component {
-
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       userInfo: [],
-      posts: []
-    }
+      posts: [],
+    };
   }
 
   componentDidMount() {
     if (!auth.currentUser) {
-      this.props.navigation.navigate('Login')
+      this.props.navigation.navigate('login');
     } else {
       this.loadUserInfo();
       this.loadUserPosts();
@@ -28,20 +25,19 @@ export default class Profile extends Component {
     db.collection('users')
       .where("owner", "==", auth.currentUser.email)
       .onSnapshot((docs) => {
-        let arrayDocs = []
-
+        let arrayDocs = [];
         docs.forEach((doc) => {
           arrayDocs.push({
             id: doc.id,
-            data: doc.data()
-          })
-        })
+            data: doc.data(),
+          });
+        });
 
         this.setState({
-          userInfo: arrayDocs
-        }, () => console.log("este es el estado", this.state))
-      })
-  }
+          userInfo: arrayDocs,
+        });
+      });
+  };
 
   loadUserPosts = () => {
     db.collection('posts')
@@ -51,54 +47,67 @@ export default class Profile extends Component {
         docs.forEach((doc) => {
           postsArray.push({
             id: doc.id,
-            data: doc.data()
-          })
-        })
+            data: doc.data(),
+          });
+        });
+
         this.setState({
-          posts: postsArray
-        }, () => console.log("posts del usuario:", this.state.posts)
-        )
-      })
-  }
+          posts: postsArray,
+        });
+      });
+  };
 
   deletePost = (postId) => {
-    db.collection('posts').doc(postId).delete()
+    db.collection('posts')
+      .doc(postId)
+      .delete()
       .then(() => {
-        Alert.alert("Post eliminado", "El post ha sido eliminado")
+        Alert.alert("Post eliminado", "El post ha sido eliminado");
       })
-  }
+      .catch((error) => {
+        Alert.alert("Error", "No se pudo eliminar el post");
+        console.error("Error eliminando post:", error);
+      });
+  };
 
-  logout = () =>
+  logout = () => {
     auth.signOut()
       .then(() => {
-        this.props.navigation.navigate('Login')}) //ver como navegar al login xq no es anidada
-      .catch((error) => {
-        console.log("Error al cerrar sesion")
+        this.props.navigation.replace('login');
       })
+      .catch((error) => {
+        Alert.alert("Error al cerrar sesión", error.message);
+        console.error("Error al cerrar sesión:", error);
+      });
+  };
 
   render() {
     return (
-      <View style={styles.container}>
-        <Text style={styles.text}>Profile</Text>
-        {this.state.userInfo.length > 0
-          ?
-          (
-            <>
-              <Text style={styles.infoText}>Nombre de usuario: {this.state.userInfo[0].data.username}</Text>
-              <Text style={styles.infoText}>Email: {this.state.userInfo[0].data.owner}</Text>
-              <Text style={styles.infoText}>Cantidad de posteos: {this.state.posts.length}</Text>
-            </>
-          )
+      <LinearGradient colors={['#A7ACB2', '#FFFFFF']} style={styles.container}>
+        <Text style={styles.text}>Perfil</Text>
+        {this.state.userInfo.length > 0 ? (
+          <View style={styles.info}>
+            <View style={styles.userInfoContainer}>
+              <Text style={styles.userInfoText}>Usuario</Text>
+              <Text style={styles.userInfoLabel}>{this.state.userInfo[0].data.username}</Text>
+            </View>
+            <View style={styles.userInfoContainer}>
+              <Text style={styles.userInfoText}>Email</Text>
+              <Text style={styles.userInfoLabel}>{this.state.userInfo[0].data.owner}</Text>
+            </View>
+            <View style={styles.postCount}>
+              <Text style={styles.postCountNumber}>{this.state.posts.length}</Text>
+              <Text style={styles.postCountLabel}>posts</Text>
+            </View>
+          </View>
 
-          :
-          (<Text style={styles.loadingText}>Cargando informacion...</Text>)}
 
-        <TouchableOpacity onPress={this.handleLogout}>
-          <Text style={styles.createPostButton}>Cerrar sesión</Text>
-        </TouchableOpacity>
+        ) : (
+          <Text style={styles.loadingText}>Cargando información...</Text>
+        )}
 
         {this.state.posts.length === 0 ? (
-          <Text>No hay posteos para mostrar.</Text>
+          <Text style={styles.noPostsText}>No hay posteos para mostrar.</Text>
         ) : (
           <FlatList
             data={this.state.posts}
@@ -106,17 +115,18 @@ export default class Profile extends Component {
             renderItem={({ item }) => (
               <View style={styles.postContainer}>
                 <Text>Tu posteo:</Text>
-                <Text style={styles.postText}>{item.data.text}</Text> 
-                <Likes postId={item.id} />
+                <Text style={styles.postText}>{item.data.text}</Text>
                 <TouchableOpacity onPress={() => this.deletePost(item.id)}>
                   <Text style={styles.deleteButton}>Eliminar</Text>
                 </TouchableOpacity>
               </View>
             )}
-            />
-          )}
-        <TouchableOpacity title="Cerrar sesión" onPress={this.logout} color="#FF0000" />
-      </View>
+          />
+        )}
+        <TouchableOpacity style={styles.logoutButton} onPress={this.logout}>
+          <Text style={styles.logoutButtonText}>Cerrar sesión</Text>
+        </TouchableOpacity>
+      </LinearGradient>
     );
   }
 }
@@ -124,64 +134,123 @@ export default class Profile extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFFFFF', 
-    padding: 20, 
+    padding: 20,
+  },
+  userInfoContainer: {
+    alignItems: 'center',
+    marginVertical: 8,
+    padding: 10,
+    borderRadius: 8,
+    flex: 1,
+    marginHorizontal: 5,
+  },
+  userInfoText: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#333',
+  },
+  userInfoLabel: {
+    fontSize: 16,
+    color: '#555',
+  },
+  postCount: {
+    alignItems: 'center',
+    marginVertical: 8,
+    padding: 10,
+    borderRadius: 8,
+    flex: 1,
+    marginHorizontal: 5,
+  },
+  postCountNumber: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#333',
+  },
+  postCountLabel: {
+    fontSize: 16,
+    color: '#555',
   },
   text: {
-    fontSize: 28, 
+    fontSize: 28,
     fontWeight: 'bold',
-    color: '#000000', 
-    marginBottom: 30, 
-    textAlign: 'center', 
+    color: '#222',
+    marginBottom: 20,
+    textAlign: 'center',
+  },
+  info: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "space-between",
+    marginBottom: 20,
+    alignItems: "center"
   },
   infoText: {
     fontSize: 18,
-    color: '#000000', 
-    marginVertical: 10, 
-    padding: 10, 
-    borderRadius: 5, 
-    backgroundColor: '#F0F0F0', 
+    fontWeight: 'bold',
+    color: '#444',
+    marginVertical: 8,
+    padding: 10,
+    borderRadius: 8,
+    flex: 1,
+    marginHorizontal: 5,
+    textAlign: 'center',
   },
   loadingText: {
     fontSize: 18,
-    color: '#0000FF', 
-    textAlign: 'center', 
-    marginTop: 20, 
+    color: '#555',
+    textAlign: 'center',
+    marginTop: 20,
+    fontStyle: 'italic',
   },
-  createPostButton: {
-    backgroundColor: '#007BFF', 
-    color: '#FFFFFF', 
-    paddingVertical: 12, 
-    paddingHorizontal: 20, 
-    borderRadius: 5, 
-    textAlign: 'center', 
-    marginTop: 30, 
-    fontSize: 18,
-    fontWeight: 'bold',
-    elevation: 2, 
+  noPostsText: {
+    fontSize: 16,
+    color: '#888',
+    textAlign: 'center',
+    marginTop: 20,
   },
   postContainer: {
     padding: 15,
-    marginVertical: 5, 
-    borderRadius: 5, 
-    backgroundColor: '#F9F9F9', 
-    shadowColor: '#000', 
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
+    marginVertical: 10,
+    borderRadius: 10,
+    backgroundColor: '#FFFFFF',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
-    shadowRadius: 2,
-    elevation: 1, 
+    shadowRadius: 4,
+    elevation: 2,
   },
   postText: {
     fontSize: 16,
-    color: '#000000', 
+    color: '#333',
+    marginBottom: 10,
   },
   deleteButton: {
-    color: '#FF0000', 
+    alignSelf: 'flex-end',
+    paddingVertical: 6,
+    paddingHorizontal: 12,
+    borderRadius: 5,
+    elevation: 2,
+  },
+  deleteButtonText: {
+    color: '#FFF',
+    fontSize: 14,
     fontWeight: 'bold',
-    marginTop: 10, 
-    textAlign: 'right', 
+  },
+  logoutButton: {
+    backgroundColor: '#FF6F61',
+    paddingVertical: 14,
+    borderRadius: 8,
+    alignItems: 'center',
+    marginTop: 30,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  logoutButtonText: {
+    color: '#FFF',
+    fontSize: 16,
+    fontWeight: 'bold',
   },
 });

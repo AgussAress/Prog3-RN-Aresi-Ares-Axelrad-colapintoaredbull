@@ -1,6 +1,7 @@
 import React, { Component } from "react";
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Dimensions } from "react-native";
+import { View, Text, Image, TextInput, TouchableOpacity, StyleSheet, Dimensions } from "react-native";
 import { auth, db } from "../firebase/config";
+import { LinearGradient } from "expo-linear-gradient";
 
 export default class Register extends Component {
   state = {
@@ -43,10 +44,19 @@ export default class Register extends Component {
 
   render() {
     return (
-      <View style={styles.container}>
-        <Text style={styles.titulo}>Registrate</Text>
+      <LinearGradient
+        colors={["#A7ACB2", "#FFFFFF"]}
+        style={styles.container}
+      >
+        <Image
+          source={require("../../assets/logo.png")}
+          style={styles.logo}
+          resizeMode="contain"
+        />
 
         <View style={styles.form}>
+          <Text style={styles.title}>Crea tu cuenta</Text>
+
           <TextInput
             style={styles.input}
             placeholder="Nombre de usuario"
@@ -70,17 +80,24 @@ export default class Register extends Component {
             onChangeText={(password) => this.setState({ password })}
           />
 
-          {this.state.error ? <Text style={styles.errorTexto}>{this.state.error}</Text> : null}
+          {this.state.error ? (
+            <View style={styles.errorBox}>
+              <Text style={styles.errorText}>{this.state.error}</Text>
+            </View>
+          ) : null}
 
-          <TouchableOpacity style={styles.boton} onPress={this.handleRegister}>
-            <Text style={styles.buttonTexto}>Registrarse</Text>
+          <TouchableOpacity style={styles.button} onPress={this.handleRegister}>
+            <Text style={styles.buttonText}>Registrarse</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.linkBoton} onPress={() => this.props.navigation.navigate("login")}>
-            <Text style={styles.linkBotonTexto}>¿Ya tienes una cuenta? Volver al Login</Text>
+          <TouchableOpacity
+            style={styles.linkButton}
+            onPress={() => this.props.navigation.navigate("login")}
+          >
+            <Text style={styles.linkButtonText}>¿Ya tienes una cuenta? Inicia sesión</Text>
           </TouchableOpacity>
         </View>
-      </View>
+      </LinearGradient>
     );
   }
 }
@@ -92,62 +109,75 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#fff",
     padding: 20,
   },
-  titulo: {
-    fontSize: 28,
-    fontWeight: "bold",
-    color: "#333",
-    marginBottom: 30,
+  logo: {
+    width: 150,
+    height: 150,
+    marginBottom: 20,
   },
   form: {
     width: width > 600 ? "40%" : "90%",
-    backgroundColor: "#f9f9f9",
-    borderRadius: 10,
+    backgroundColor: "#fff",
+    borderRadius: 15,
     padding: 20,
     shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 2,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.2,
+    shadowRadius: 5,
+    elevation: 5,
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: "bold",
+    color: "#333",
+    marginBottom: 20,
+    textAlign: "center",
   },
   input: {
     width: "100%",
     height: 50,
     borderWidth: 1,
-    borderColor: "#ddd",
+    borderColor: "#e87474",
     borderRadius: 8,
     paddingHorizontal: 10,
     marginBottom: 15,
     backgroundColor: "#fff",
   },
-  boton: {
+  button: {
     width: "100%",
     height: 50,
-    backgroundColor: "#3897f0",
+    backgroundColor: "#e87474",
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 8,
     marginTop: 10,
   },
-  buttonTexto: {
+  buttonText: {
     color: "#fff",
     fontSize: 16,
     fontWeight: "bold",
   },
-  linkBoton: {
+  linkButton: {
     marginTop: 15,
     alignItems: "center",
   },
-  linkBotonTexto: {
-    color: "#3897f0",
+  linkButtonText: {
+    color: "#e87474",
     fontSize: 14,
     textDecorationLine: "underline",
   },
-  errorTexto: {
-    color: "red",
+  errorBox: {
+    backgroundColor: "#ffe4e4",
+    borderWidth: 1,
+    borderColor: "#ff4d4d",
+    borderRadius: 8,
+    padding: 10,
     marginBottom: 10,
+  },
+  errorText: {
+    color: "#ff4d4d",
+    fontSize: 14,
     textAlign: "center",
   },
 });

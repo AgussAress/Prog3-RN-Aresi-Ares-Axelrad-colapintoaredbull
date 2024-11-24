@@ -75,15 +75,13 @@ export default class Likes extends Component {
 const styles = StyleSheet.create({
     button: {
         padding: 10,
-        backgroundColor: 'green',
+        backgroundColor: '#e87474',
         borderRadius: 5,
-        marginTop: 10,
     },
     likedButton: {
         padding: 10,
         backgroundColor: 'red',
         borderRadius: 5,
-        marginTop: 10,
     },
     buttonText: {
         color: '#FFFFFF',
