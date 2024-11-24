@@ -1,82 +1,80 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import { View, Text, StyleSheet, Alert, FlatList, TouchableOpacity } from 'react-native';
-import { db } from "../firebase/config"
-import { auth } from "../firebase/config"
+import {db} from "../firebase/config"
+import {auth} from "../firebase/config"
 import SubirPosteos from "../screens/SubirPosteos"
 import Likes from '../componentes/Likes';
 
+
 export default class Profile extends Component {
 
-  constructor(props) {
+  constructor(props){
     super(props)
     this.state = {
-      userInfo: [],
+      userInfo: [], 
       posts: []
     }
   }
 
-  componentDidMount() {
-    if (!auth.currentUser) {
-      this.props.navigation.navigate('Login')
-    } else {
-      this.loadUserInfo();
-      this.loadUserPosts();
-    }
+  componentDidMount(){
+    this.loadUserInfo();
+    this.loadUserPosts()
   }
+  
+  loadUserInfo = ()=>{
+  db.collection('users')
+    .where("owner", "==", auth.currentUser.email)
+    .onSnapshot((docs)=> {
+      let arrayDocs = []
 
-  loadUserInfo = () => {
-    db.collection('users')
-      .where("owner", "==", auth.currentUser.email)
-      .onSnapshot((docs) => {
-        let arrayDocs = []
-
-        docs.forEach((doc) => {
-          arrayDocs.push({
-            id: doc.id,
-            data: doc.data()
-          })
+      docs.forEach((doc)=>{
+        arrayDocs.push({
+          id: doc.id, 
+          data: doc.data()
         })
-
-        this.setState({
-          userInfo: arrayDocs
-        }, () => console.log("este es el estado", this.state))
       })
+
+      this.setState({
+        userInfo: arrayDocs
+      }, ()=> console.log("este es el estado", this.state))
+    })
   }
 
-  loadUserPosts = () => {
+  loadUserPosts = ()=>{
     db.collection('posts')
-      .where("owner", "==", auth.currentUser.email)
-      .onSnapshot((docs) => {
-        let postsArray = [];
-        docs.forEach((doc) => {
-          postsArray.push({
-            id: doc.id,
-            data: doc.data()
-          })
+    .where("owner", "==", auth.currentUser.email)
+    .onSnapshot((docs)=>{
+      let postsArray = [];
+      docs.forEach((doc)=>{
+        postsArray.push({
+          id:doc.id,
+          data:doc.data()
         })
-        this.setState({
-          posts: postsArray
-        }, () => console.log("posts del usuario:", this.state.posts)
-        )
       })
+      this.setState({
+        posts: postsArray
+      }, ()=> console.log("posts del usuario:", this.state.posts)
+      )
+    })
   }
 
   deletePost = (postId) => {
     db.collection('posts').doc(postId).delete()
-      .then(() => {
-        Alert.alert("Post eliminado", "El post ha sido eliminado")
-      })
+    .then(()=>{
+      Alert.alert("Post eliminado", "El post ha sido eliminado")
+    })
   }
 
   logout = () =>
     auth.signOut()
-      .then(() => {
-        this.props.navigation.navigate('Login')}) //ver como navegar al login xq no es anidada
-      .catch((error) => {
-        console.log("Error al cerrar sesion")
-      })
+     .then(()=> {
+      this.props.navigation.navigate('Login')
+     })
+     .catch((error)=> {
+      console.log("Error al cerrar sesion")
+     })
 
-  render() {
+  render(){
     return (
       <View style={styles.container}>
         <Text style={styles.text}>Profile</Text>
@@ -115,10 +113,11 @@ export default class Profile extends Component {
             )}
             />
           )}
+        
         <TouchableOpacity title="Cerrar sesión" onPress={this.logout} color="#FF0000" />
       </View>
     );
-  }
+}
 }
 
 const styles = StyleSheet.create({
@@ -183,5 +182,4 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginTop: 10, 
     textAlign: 'right', 
-  },
-});
+  }})
