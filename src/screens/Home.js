@@ -54,11 +54,7 @@ export default class Home extends Component {
             <View style={styles.postContainer}>
               <View style={styles.header}>
                 <Image
-                  source={
-                    item.data.avatar
-                      ? { uri: item.data.avatar }
-                      : require("../../assets/avatar.png") 
-                  }
+                  source={require("../../assets/avatar.png")}
                   style={styles.avatar}
                 />
                 <Text style={styles.username}>
