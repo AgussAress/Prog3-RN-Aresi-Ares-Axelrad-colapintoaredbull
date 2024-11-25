@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, Alert, FlatList, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, Alert, FlatList, TouchableOpacity, Image } from 'react-native';
 import { db, auth } from "../firebase/config";
 import { LinearGradient } from 'expo-linear-gradient';
 
@@ -84,7 +84,10 @@ export default class Profile extends Component {
   render() {
     return (
       <LinearGradient colors={['#A7ACB2', '#FFFFFF']} style={styles.container}>
-        <Text style={styles.text}>Perfil</Text>
+        <Image
+          source={require("../../assets/avatar.png")}
+          style={styles.avatar}
+        />
         {this.state.userInfo.length > 0 ? (
           <View style={styles.info}>
             <View style={styles.userInfoContainer}>
@@ -133,8 +136,18 @@ export default class Profile extends Component {
 
 const styles = StyleSheet.create({
   container: {
+    display: "flex",
+    justifyContent: "center",
+    alignContent: "center",
     flex: 1,
     padding: 20,
+  },
+  avatar: {
+    alignSelf: "center",
+    width: 150,
+    height: 150,
+    borderRadius: 100,
+
   },
   userInfoContainer: {
     alignItems: 'center',

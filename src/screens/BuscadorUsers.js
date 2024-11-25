@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, TextInput, FlatList, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { View, TextInput, FlatList, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 import { db } from "../firebase/config";
 import { LinearGradient } from "expo-linear-gradient";
 
@@ -63,6 +63,11 @@ export default class BuscadorUsers extends Component {
         colors={["#A7ACB2", "#FFFFFF"]}
         style={styles.container}
       >
+        <Image
+          source={require("../../assets/logo.png")}
+          style={styles.logo}
+          resizeMode="contain"
+        />
         <TextInput
           style={styles.input}
           placeholder="Buscar usuarios..."
@@ -99,6 +104,11 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
     alignItems: "center",
     paddingTop: 30,
+  },
+  logo: {
+    width: 150,
+    height: 150,
+    marginBottom: 20,
   },
   input: {
     height: 50,
