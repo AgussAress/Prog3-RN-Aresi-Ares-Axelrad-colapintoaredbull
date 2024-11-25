@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { View, TextInput, FlatList, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { db } from "../firebase/config";
+import { LinearGradient } from "expo-linear-gradient";
 
 export default class BuscadorUsers extends Component {
   constructor(props) {
@@ -38,7 +39,6 @@ export default class BuscadorUsers extends Component {
   verPublicacionesUsuario = (usuario) => {
     this.setState({ usuarioSeleccionado: usuario, publicaciones: [] })
 
-    // Log del usuario seleccionado
     console.log("Usuario seleccionado:", usuario);
 
     db.collection("posts")
@@ -59,7 +59,10 @@ export default class BuscadorUsers extends Component {
     const { resultados, publicaciones, usuarioSeleccionado } = this.state
 
     return (
-      <View style={styles.container}>
+      <LinearGradient
+        colors={["#A7ACB2", "#FFFFFF"]}
+        style={styles.container}
+      >
         <TextInput
           style={styles.input}
           placeholder="Buscar usuarios..."
@@ -84,9 +87,7 @@ export default class BuscadorUsers extends Component {
             <Text style={styles.noResults}>No hay resultados de búsqueda</Text>
           )
         )}
-
-        
-      </View>
+      </LinearGradient>
     );
   }
 }
@@ -95,7 +96,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: 20,
-    backgroundColor: "#f5f5f5",
+    justifyContent: "flex-start",
+    alignItems: "center",
+    paddingTop: 30,
   },
   input: {
     height: 50,
@@ -111,18 +114,20 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 4,
     elevation: 2,
+    width: "100%",
   },
   resultItem: {
     paddingVertical: 14,
     paddingHorizontal: 16,
     borderRadius: 10,
     backgroundColor: "#fff",
-    marginBottom: 10,
+    marginBottom: 15,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.08,
     shadowRadius: 5,
-    elevation: 2,
+    elevation: 3,
+    width: "100%",
   },
   username: {
     fontSize: 18,
@@ -139,6 +144,7 @@ const styles = StyleSheet.create({
   publicacionesContainer: {
     marginTop: 30,
     paddingHorizontal: 20,
+    width: "100%",
   },
   selectedUser: {
     fontSize: 20,
@@ -150,7 +156,7 @@ const styles = StyleSheet.create({
     padding: 18,
     borderRadius: 10,
     backgroundColor: "#fff",
-    marginBottom: 10,
+    marginBottom: 15,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
