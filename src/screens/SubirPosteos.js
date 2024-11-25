@@ -1,7 +1,5 @@
 import React, { Component } from "react";
-import {
-  View, Text, TextInput, TouchableOpacity, Image, StyleSheet, Alert, Dimensions,
-} from "react-native";
+import { View, Text, TextInput, TouchableOpacity, Image, StyleSheet, Alert, Dimensions } from "react-native";
 import { db } from "../firebase/config";
 import { auth } from "../firebase/config";
 import { LinearGradient } from "expo-linear-gradient";
@@ -27,6 +25,7 @@ export default class CreatePost extends Component {
       createdAt: new Date(),
       owner: auth.currentUser.email,
       likes: [],
+      avatar: "https://via.placeholder.com/50"
     };
 
     db.collection("posts")

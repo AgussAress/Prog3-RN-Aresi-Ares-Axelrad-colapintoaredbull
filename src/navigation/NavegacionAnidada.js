@@ -12,61 +12,61 @@ export default class NavegacionAnidada extends Component {
   render() {
     return (
       <Tab.Navigator>
-        <Tab.Screen 
-          name="Home" 
-          component={Home} 
+        <Tab.Screen
+          name="Home"
+          component={Home}
           options={{
             headerShown: false,
             tabBarIcon: ({ focused, color, size }) => (
-              <FontAwesome 
-                name="home" 
-                size={size || 24} 
-                color={focused ? 'tomato' : 'black'} 
+              <FontAwesome
+                name="home"
+                size={size || 24}
+                color={focused ? 'tomato' : 'black'}
               />
             )
-          }} 
+          }}
         />
-        <Tab.Screen 
-          name="Profile" 
-          component={Profile} 
-          options={{ 
+        <Tab.Screen
+          name="Buscador"
+          component={BuscadorUsers}
+          options={{
             headerShown: false,
             tabBarIcon: ({ focused, color, size }) => (
-              <FontAwesome 
-                name="user" 
-                size={size || 24} 
-                color={focused ? 'tomato' : 'black'} 
+              <FontAwesome
+                name="search"
+                size={size || 24}
+                color={focused ? 'tomato' : 'black'}
               />
             )
-          }} 
+          }}
         />
-        <Tab.Screen 
-          name="Buscador" 
-          component={BuscadorUsers} 
-          options={{ 
+        <Tab.Screen
+          name="Crear posteo"
+          component={SubirPosteos}
+          options={{
             headerShown: false,
             tabBarIcon: ({ focused, color, size }) => (
-              <FontAwesome 
-                name="search" 
-                size={size || 24} 
-                color={focused ? 'tomato' : 'black'} 
+              <FontAwesome
+                name="plus-circle"
+                size={size || 24}
+                color={focused ? 'tomato' : 'black'}
               />
             )
-          }} 
+          }}
         />
-        <Tab.Screen 
-          name="Crear posteo" 
-          component={SubirPosteos} 
-          options={{ 
+        <Tab.Screen
+          name="Profile"
+          component={Profile}
+          options={{
             headerShown: false,
             tabBarIcon: ({ focused, color, size }) => (
-              <FontAwesome 
-                name="plus-circle" 
-                size={size || 24} 
-                color={focused ? 'tomato' : 'black'} 
+              <FontAwesome
+                name="user"
+                size={size || 24}
+                color={focused ? 'tomato' : 'black'}
               />
             )
-          }} 
+          }}
         />
       </Tab.Navigator>
     );

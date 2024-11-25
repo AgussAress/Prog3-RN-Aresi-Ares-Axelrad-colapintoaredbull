@@ -11,6 +11,12 @@ export default class Register extends Component {
     error: "",
   };
 
+  componentDidMount() {
+    if (auth.currentUser) {
+      this.props.navigation.navigate("login");
+    }
+  }
+
   handleRegister = () => {
     const { email, password, username } = this.state;
 
@@ -33,7 +39,7 @@ export default class Register extends Component {
           .then(() => {
             this.props.navigation.navigate("anidada");
           })
-          .catch((err) => {
+          .catch(() => {
             this.setState({ error: "Error al guardar los datos del usuario." });
           });
       })
@@ -42,12 +48,16 @@ export default class Register extends Component {
       });
   };
 
+  isFormValid = () => {
+    const { email, password, username } = this.state;
+    return email.trim() && password.trim() && username.trim();
+  };
+
   render() {
+    const isButtonDisabled = !this.isFormValid();
+
     return (
-      <LinearGradient
-        colors={["#A7ACB2", "#FFFFFF"]}
-        style={styles.container}
-      >
+      <LinearGradient colors={["#A7ACB2", "#FFFFFF"]} style={styles.container}>
         <Image
           source={require("../../assets/logo.png")}
           style={styles.logo}
@@ -86,7 +96,11 @@ export default class Register extends Component {
             </View>
           ) : null}
 
-          <TouchableOpacity style={styles.button} onPress={this.handleRegister}>
+          <TouchableOpacity
+            style={[styles.button, isButtonDisabled && styles.disabledButton]}
+            onPress={this.handleRegister}
+            disabled={isButtonDisabled}
+          >
             <Text style={styles.buttonText}>Registrarse</Text>
           </TouchableOpacity>
 
@@ -158,6 +172,9 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "bold",
   },
+  disabledButton: {
+    backgroundColor: "#ccc",
+  },
   linkButton: {
     marginTop: 15,
     alignItems: "center",
@@ -181,3 +198,4 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
 });
+

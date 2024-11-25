@@ -150,7 +150,7 @@ const styles = StyleSheet.create({
     color: '#333',
   },
   userInfoLabel: {
-    fontSize: 16,
+    fontSize: 14,
     color: '#555',
   },
   postCount: {
@@ -167,7 +167,7 @@ const styles = StyleSheet.create({
     color: '#333',
   },
   postCountLabel: {
-    fontSize: 16,
+    fontSize: 14,
     color: '#555',
   },
   text: {

@@ -1,12 +1,5 @@
 import React, { Component } from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  FlatList,
-  TouchableOpacity,
-  Image,
-} from "react-native";
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { db, auth } from "../firebase/config";
 import Likes from "../componentes/Likes";
@@ -20,7 +13,7 @@ export default class Home extends Component {
   }
 
   componentDidMount() {
-    if (!auth.currentUser ) {
+    if (!auth.currentUser) {
       this.props.navigation.navigate("login");
     } else {
       this.loadPosts();
@@ -47,13 +40,13 @@ export default class Home extends Component {
   render() {
     return (
       <LinearGradient colors={["#A7ACB2", "#FFFFFF"]} style={styles.container}>
-        
+
         <Image
           source={require("../../assets/logo.png")}
           style={styles.logo}
           resizeMode="contain"
         />
-  
+
         <FlatList
           data={this.state.posts}
           keyExtractor={(item) => item.id}
@@ -61,9 +54,11 @@ export default class Home extends Component {
             <View style={styles.postContainer}>
               <View style={styles.header}>
                 <Image
-                  source={{
-                    uri: item.data.avatar || "https://via.placeholder.com/50",
-                  }}
+                  source={
+                    item.data.avatar
+                      ? { uri: item.data.avatar }
+                      : require("../../assets/avatar.png") 
+                  }
                   style={styles.avatar}
                 />
                 <Text style={styles.username}>
@@ -73,7 +68,6 @@ export default class Home extends Component {
 
               <Text style={styles.postText}>{item.data.text}</Text>
 
-              {/* Footer con likes y acciones */}
               <View style={styles.footer}>
                 <Likes postId={item.id} />
                 <Text style={styles.likesCount}>
@@ -101,7 +95,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   listContainer: {
-    padding:10
+    padding: 10
   },
   postContainer: {
     backgroundColor: "#FFFFFF",
@@ -141,8 +135,8 @@ const styles = StyleSheet.create({
   },
   footer: {
     flexDirection: "row",
-    justifyContent: "space-between", 
-    alignItems: "center", 
+    justifyContent: "space-between",
+    alignItems: "center",
     padding: 10,
     borderBottomLeftRadius: 10,
     borderBottomRightRadius: 10,
