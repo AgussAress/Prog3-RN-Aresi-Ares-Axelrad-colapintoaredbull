@@ -21,7 +21,7 @@ export default class Profile extends Component {
     }
   }
 
-  loadUserInfo = () => {
+  loadUserInfo() {
     db.collection('users')
       .where("owner", "==", auth.currentUser.email)
       .onSnapshot((docs) => {
@@ -39,7 +39,7 @@ export default class Profile extends Component {
       });
   };
 
-  loadUserPosts = () => {
+  loadUserPosts() {
     db.collection('posts')
       .where("owner", "==", auth.currentUser.email)
       .onSnapshot((docs) => {
@@ -57,7 +57,7 @@ export default class Profile extends Component {
       });
   };
 
-  deletePost = (postId) => {
+  deletePost(postId) {
     db.collection('posts')
       .doc(postId)
       .delete()
@@ -70,7 +70,7 @@ export default class Profile extends Component {
       });
   };
 
-  logout = () => {
+  logout() {
     auth.signOut()
       .then(() => {
         this.props.navigation.replace('login');
@@ -123,7 +123,7 @@ export default class Profile extends Component {
             )}
           />
         )}
-        <TouchableOpacity style={styles.logoutButton} onPress={this.logout}>
+        <TouchableOpacity style={styles.logoutButton} onPress={() => this.logout()}>
           <Text style={styles.logoutButtonText}>Cerrar sesión</Text>
         </TouchableOpacity>
       </LinearGradient>

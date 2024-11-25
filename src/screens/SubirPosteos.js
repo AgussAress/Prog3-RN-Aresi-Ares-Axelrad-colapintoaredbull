@@ -14,7 +14,7 @@ export default class CreatePost extends Component {
     };
   }
 
-  CreatePost = () => {
+  CreatePost() {
     const { postText } = this.state;
 
     if (postText.trim() === "") {
@@ -59,7 +59,7 @@ export default class CreatePost extends Component {
             value={this.state.postText}
             onChangeText={(text) => this.setState({ postText: text })}
           />
-          <TouchableOpacity style={styles.button} onPress={this.CreatePost}>
+          <TouchableOpacity style={styles.button} onPress={() => this.CreatePost()}>
             <Text style={styles.buttonText}>Publicar</Text>
           </TouchableOpacity>
         </View>

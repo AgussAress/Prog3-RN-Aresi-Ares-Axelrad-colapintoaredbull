@@ -28,7 +28,7 @@ export default class Likes extends Component {
         });
     }
 
-    cambioLike = () => {
+    cambioLike(){
         const { postId } = this.props;
         if (this.state.liked) {
             this.noLikeado(postId);
@@ -65,7 +65,7 @@ export default class Likes extends Component {
 
     render() {
         return (
-            <TouchableOpacity onPress={this.cambioLike} style={this.state.liked ? styles.likedButton : styles.button}>
+            <TouchableOpacity onPress={ () => this.cambioLike()} style={this.state.liked ? styles.likedButton : styles.button}>
                 <Text style={styles.buttonText}>{this.state.liked ? 'Ya no me gusta' : 'Me gusta'}</Text>
             </TouchableOpacity>
         )
@@ -75,13 +75,15 @@ export default class Likes extends Component {
 const styles = StyleSheet.create({
     button: {
         padding: 10,
-        backgroundColor: '#e87474',
+        backgroundColor: 'green',
         borderRadius: 5,
+        marginTop: 10,
     },
     likedButton: {
         padding: 10,
         backgroundColor: 'red',
         borderRadius: 5,
+        marginTop: 10,
     },
     buttonText: {
         color: '#FFFFFF',
