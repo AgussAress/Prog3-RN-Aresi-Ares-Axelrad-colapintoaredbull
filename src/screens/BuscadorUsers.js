@@ -33,11 +33,11 @@ export default class BuscadorUsers extends Component {
         console.log("Usuarios encontrados:", resultados);
         this.setState({ resultados });
       })
-      .catch((error) => console.log(error))
+      .catch((error) => console.log(error));
   };
 
   verPublicacionesUsuario = (usuario) => {
-    this.setState({ usuarioSeleccionado: usuario, publicaciones: [] })
+    this.setState({ usuarioSeleccionado: usuario, publicaciones: [] });
 
     console.log("Usuario seleccionado:", usuario);
 
@@ -52,11 +52,11 @@ export default class BuscadorUsers extends Component {
         console.log("Publicaciones encontradas:", publicaciones);
         this.setState({ publicaciones });
       })
-      .catch((error) => console.log(error))
+      .catch((error) => console.log(error));
   };
 
   render() {
-    const { resultados, publicaciones, usuarioSeleccionado } = this.state
+    const { resultados } = this.state;
 
     return (
       <LinearGradient
@@ -83,9 +83,12 @@ export default class BuscadorUsers extends Component {
                 style={styles.resultItem}
                 onPress={() => this.verPublicacionesUsuario(item)}
               >
-                <Text style={styles.username}>{item.username}</Text>
+                <Text style={styles.username} numberOfLines={1} ellipsizeMode="tail">
+                  {item.username}
+                </Text>
               </TouchableOpacity>
             )}
+            style={styles.resultList}
           />
         ) : (
           this.state.query !== "" && (
@@ -125,6 +128,11 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 2,
     width: "100%",
+    flexShrink: 0,
+  },
+  resultList: {
+    flexGrow: 1,
+    width: "100%",
   },
   resultItem: {
     paddingVertical: 14,
@@ -143,6 +151,10 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "500",
     color: "#333",
+    textAlign: "left",
+    overflow: "hidden",
+    flex: 1,
+    maxWidth: "100%",
   },
   noResults: {
     fontSize: 16,
@@ -150,38 +162,5 @@ const styles = StyleSheet.create({
     textAlign: "center",
     marginTop: 20,
     fontStyle: "italic",
-  },
-  publicacionesContainer: {
-    marginTop: 30,
-    paddingHorizontal: 20,
-    width: "100%",
-  },
-  selectedUser: {
-    fontSize: 20,
-    fontWeight: "bold",
-    color: "#333",
-    marginBottom: 10,
-  },
-  postItem: {
-    padding: 18,
-    borderRadius: 10,
-    backgroundColor: "#fff",
-    marginBottom: 15,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 5,
-    elevation: 3,
-  },
-  postText: {
-    fontSize: 16,
-    color: "#555",
-    lineHeight: 22,
-  },
-  noPosts: {
-    fontSize: 16,
-    color: "#999",
-    textAlign: "center",
-    marginTop: 10,
   },
 });
